@@ -1,0 +1,28 @@
+{
+  "name": "simple-nodejs-crud-api",
+  "version": "1.0.0",
+  "description": "simple-nodejs-CRUD-API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start:dev": "nodemon src/app/server.js",
+    "start:prod": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! npm run start:prod",
+    "start:multi": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! npm run start:multi",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexXG0152/simple-nodejs-CRUD-API.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexXG0152/simple-nodejs-CRUD-API/issues"
+  },
+  "homepage": "https://github.com/AlexXG0152/simple-nodejs-CRUD-API#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20",
+    "uuid": "^9.0.0"
+  }
+}
