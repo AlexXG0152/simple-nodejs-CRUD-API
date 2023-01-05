@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { IUser } from "../interfaces/user.interface.js";
+import { IUser } from "../interfaces/user.interface";
 
 const names = [
   "Aaran",

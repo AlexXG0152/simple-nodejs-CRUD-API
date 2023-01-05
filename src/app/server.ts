@@ -1,6 +1,6 @@
 import http from "node:http";
-import { routes } from "./routes/router.js";
-import { generateUsersArray } from "./users/userCreate.js";
+import { routes } from "../app/routes/router";
+import { generateUsersArray } from "../app/users/userCreate";
 import * as dotenv from "dotenv";
 
 dotenv.config();

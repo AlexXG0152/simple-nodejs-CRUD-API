@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from "node:http";
-import { IUser } from "../interfaces/user.interface.js";
+import { IUser } from "../interfaces/user.interface";
 
 export const userIdErrorHandler = async (
   req: IncomingMessage,

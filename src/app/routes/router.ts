@@ -5,7 +5,7 @@ import {
   createOneUser,
   updateOneUser,
   deleteOneUser,
-} from "../controllers/user.js";
+} from "../controllers/user";
 
 export const routes = async (
   req: IncomingMessage,

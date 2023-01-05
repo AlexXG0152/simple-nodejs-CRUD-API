@@ -1,13 +1,13 @@
-import { users } from "../server.js";
+import { IncomingMessage, ServerResponse } from "node:http";
 import { v4 as uuidv4 } from "uuid";
+import { users } from "../server";
 import {
   userIdErrorHandler,
   userNotExistsErrorHandler,
   userServerErrorHandler,
   userBodyErrorHandler,
-} from "../users/userErrorHandler.js";
-import { IncomingMessage, ServerResponse } from "node:http";
-import { IUser } from "../interfaces/user.interface.js";
+} from "../users/userErrorHandler";
+import { IUser } from "../interfaces/user.interface";
 
 export const getAllUsers = async (
   req: IncomingMessage,
@@ -73,7 +73,7 @@ export const updateOneUser = async (
     const data = JSON.parse(await getBodyData(req));
 
     if (!(await userBodyErrorHandler(data, res))) return;
-        
+
     for (const key in users) {
       if (Object.hasOwnProperty.call(users, key)) {
         if (users[key].id === uuid) {
@@ -83,9 +83,8 @@ export const updateOneUser = async (
         }
       }
     }
-    
-    await success(await getUser(uuid!), 200, res);
 
+    await success(await getUser(uuid!), 200, res);
   } catch (error) {
     await userServerErrorHandler(res);
   }
