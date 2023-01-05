@@ -2,7 +2,7 @@ import { users } from "../server.js";
 import { v4 as uuidv4 } from "uuid";
 import {
   userIdErrorHandler,
-  userExistsErrorHandler,
+  userNotExistsErrorHandler,
   userServerErrorHandler,
   userBodyErrorHandler,
 } from "../users/userErrorHandler.js";
@@ -30,7 +30,7 @@ export const getOneUser = async (
     const user = await getUser(uuid!);
 
     if (user.length === 0) {
-      await userExistsErrorHandler(res);
+      await userNotExistsErrorHandler(res);
       return
     }
 
