@@ -1,4 +1,4 @@
-import { users } from "../server";
+import { users } from "../server.js";
 import { v4 as uuidv4 } from "uuid";
 import {
   userIdErrorHandler,
@@ -6,8 +6,13 @@ import {
   userServerErrorHandler,
   userBodyErrorHandler,
 } from "../users/userErrorHandler.js";
+import { IncomingMessage, ServerResponse } from "node:http";
+import { IUser } from "../interfaces/user.interface.js";
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     await success(users, 200, res);
   } catch (error) {
@@ -15,14 +20,18 @@ export const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
-export const getOneUser = async (req: Request, res: Response) => {
+export const getOneUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     await userIdErrorHandler(req, res);
-    const uuid = await getUUIDfromURL(req);
-    const user = await getUser(uuid);
+    const uuid = await getUUIDfromURL(req)!;
+    const user = await getUser(uuid!);
 
     if (user.length === 0) {
       await userExistsErrorHandler(res);
+      return
     }
 
     await success(user, 200, res);
@@ -31,7 +40,10 @@ export const getOneUser = async (req: Request, res: Response) => {
   }
 };
 
-export const createOneUser = async (req: Request, res: Response) => {
+export const createOneUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     const user = JSON.parse(await getBodyData(req));
 
@@ -44,17 +56,20 @@ export const createOneUser = async (req: Request, res: Response) => {
       hobbies: JSON.parse(user.hobbies.replace(/'/g, '"')),
     });
 
-    await success(users.at(-1), 201, res);
+    await success(users.at(-1)!, 201, res);
   } catch (error) {
     await userServerErrorHandler(res);
   }
 };
 
-export const updateOneUser = async (req: Request, res: Response) => {
+export const updateOneUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     await userIdErrorHandler(req, res);
     const uuid = await getUUIDfromURL(req);
-    const user = await getUser(uuid);
+    const user = await getUser(uuid!);
     const data = JSON.parse(await getBodyData(req));
     if (!(await userBodyErrorHandler(data, res))) return;
 
@@ -68,13 +83,16 @@ export const updateOneUser = async (req: Request, res: Response) => {
       }
     }
 
-    await success(await getUser(uuid), 200, res);
+    await success(await getUser(uuid!), 200, res);
   } catch (error) {
     await userServerErrorHandler(res);
   }
 };
 
-export const deleteOneUser = async (req: Request, res: Response) => {
+export const deleteOneUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     await userIdErrorHandler(req, res);
     const uuid = await getUUIDfromURL(req);
@@ -93,19 +111,25 @@ export const deleteOneUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getUUIDfromURL = async (req: Request) => req.url.split("/").at(-1);
+export const getUUIDfromURL = async (
+  req: IncomingMessage
+): Promise<string | undefined> => req.url!.split("/").at(-1);
 
 export const getUser = async (uuid: string) => {
-  const user = users.filter((data) => uuid === data.id);
+  const user: IUser[] = users.filter((data) => uuid === data.id);
   return user;
 };
 
-export const success = async (data, code: Number, res:Response) => {
+export const success = async (
+  data: string | IUser | IUser[],
+  code: number,
+  res: ServerResponse
+): Promise<void> => {
   res.statusCode = code;
   res.end(JSON.stringify(data));
 };
 
-export const getBodyData = async (req) => {
+export const getBodyData = async (req: any): Promise<string> => {
   const buffers = [];
   for await (const chunk of req) {
     buffers.push(chunk);

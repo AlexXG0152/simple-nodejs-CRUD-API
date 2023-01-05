@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { IUser } from "../interfaces/user.interface.js";
 
 const names = [
   "Aaran",
@@ -17,7 +18,7 @@ const names = [
   "Paul",
   "Vanessa",
   "Julia",
-  "Zoye"
+  "Zoye",
 ];
 
 const hobbies = [
@@ -56,9 +57,12 @@ const hobbies = [
   "Sudoku",
 ];
 
-export const users = [];
+export const users: IUser[] = [];
 
-export const generateUsersArray = async (start, finish) => {
+export const generateUsersArray = async (
+  start: number,
+  finish: number
+): Promise<IUser[]> => {
   for (let i = start; i <= finish; i++) {
     users.push({
       id: uuidv4(),
@@ -67,11 +71,11 @@ export const generateUsersArray = async (start, finish) => {
       hobbies: searchRandom(5, hobbies),
     });
   }
-  return users
+  return users;
 };
 
-function searchRandom(count, arr) {
-  let answer = [];
+function searchRandom(count: number, arr: string[]): string[] {
+  let answer: string[] = [];
   let counter = 0;
 
   while (counter < count) {
@@ -85,6 +89,6 @@ function searchRandom(count, arr) {
   return answer;
 }
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }

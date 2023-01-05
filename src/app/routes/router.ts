@@ -1,3 +1,4 @@
+import { IncomingMessage, ServerResponse } from "node:http";
 import {
   getAllUsers,
   getOneUser,
@@ -6,38 +7,26 @@ import {
   deleteOneUser,
 } from "../controllers/user.js";
 
-import {CustomResponse} from "../interfaces/response.interface"
-
-export const requestListener = async (req: Request, res: Response) => {
+export const requestListener = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   res.setHeader("Content-Type", "application/json");
-  if (req.url.endsWith("/api/users") && req.method === "GET") {
+  if (req.url!.endsWith("/api/users") && req.method === "GET") {
     await getAllUsers(req, res);
-  } else if (req.url.includes("/api/users/") && req.method === "GET") {
+  } else if (req.url!.includes("/api/users/") && req.method === "GET") {
     await getOneUser(req, res);
   } else if (req.url === "/api/users" && req.method === "POST") {
     await createOneUser(req, res);
-  } else if (req.url.includes("/api/users/") && req.method === "PUT") {
+  } else if (req.url!.includes("/api/users/") && req.method === "PUT") {
     await updateOneUser(req, res);
-  } else if (req.url.includes("/api/users/") && req.method === "DELETE") {
+  } else if (req.url!.includes("/api/users/") && req.method === "DELETE") {
     await deleteOneUser(req, res);
   } else {
     res.statusCode = 404;
     res.end(JSON.stringify({ error: "Resource not found" }));
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // req.url
 //   .split("/")

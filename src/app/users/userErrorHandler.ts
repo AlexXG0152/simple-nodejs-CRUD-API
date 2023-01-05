@@ -1,5 +1,11 @@
-export const userIdErrorHandler = async (req: Request, res:Response) => {
-  const uuid = req.url.split("/").at(-1);
+import { IncomingMessage, ServerResponse } from "node:http";
+import { IUser } from "../interfaces/user.interface.js";
+
+export const userIdErrorHandler = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
+  const uuid = req.url!.split("/").at(-1);
   if (
     !uuid?.match(
       /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
@@ -10,25 +16,34 @@ export const userIdErrorHandler = async (req: Request, res:Response) => {
   }
 };
 
-export const userBodyErrorHandler = async (user, res) => {
+export const userBodyErrorHandler = async (
+  user: IUser,
+  res: ServerResponse
+): Promise<boolean> => {
   if (
     typeof user.username !== "string" ||
     typeof user.age !== "number" ||
-    typeof JSON.parse(user.hobbies.replace(/'/g, '"')) !== "object"
+    typeof JSON.parse(
+      (user.hobbies as unknown as string).replace(/'/g, '"')
+    ) !== "object"
   ) {
     res.statusCode = 400;
     res.end(JSON.stringify({ error: "body does not contain required fields" }));
-    return false
+    return false;
   }
-  return true
+  return true;
 };
 
-export const userExistsErrorHandler = async (res) => {
+export const userExistsErrorHandler = async (
+  res: ServerResponse
+): Promise<void> => {
   res.statusCode = 404;
   res.end(JSON.stringify({ error: "userId doesn't exist" }));
 };
 
-export const userServerErrorHandler = async (res) => {
+export const userServerErrorHandler = async (
+  res: ServerResponse
+): Promise<void> => {
   res.statusCode = 500;
   res.end(JSON.stringify({ error: "server error" }));
 };
