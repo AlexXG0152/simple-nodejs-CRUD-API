@@ -6,8 +6,13 @@ import {
   userServerErrorHandler,
   userBodyErrorHandler,
 } from "../users/userErrorHandler.js";
+import { IncomingMessage, ServerResponse } from "node:http";
+import { IUser } from "../interfaces/user.interface.js";
 
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     await success(users, 200, res);
   } catch (error) {
@@ -15,15 +20,18 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-export const getOneUser = async (req, res) => {
+export const getOneUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     await userIdErrorHandler(req, res);
-    const uuid = await getUUIDfromURL(req);
-    const user = await getUser(uuid);
+    const uuid = await getUUIDfromURL(req)!;
+    const user = await getUser(uuid!);
 
-    if (user.length === 0) {
+    if (!user) {
       await userNotExistsErrorHandler(res);
-      return
+      return;
     }
 
     await success(user, 200, res);
@@ -32,7 +40,10 @@ export const getOneUser = async (req, res) => {
   }
 };
 
-export const createOneUser = async (req, res) => {
+export const createOneUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     const user = JSON.parse(await getBodyData(req));
 
@@ -45,37 +56,45 @@ export const createOneUser = async (req, res) => {
       hobbies: JSON.parse(user.hobbies.replace(/'/g, '"')),
     });
 
-    await success(users.at(-1), 201, res);
+    await success(users.at(-1)!, 201, res);
   } catch (error) {
     await userServerErrorHandler(res);
   }
 };
 
-export const updateOneUser = async (req, res) => {
+export const updateOneUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     await userIdErrorHandler(req, res);
     const uuid = await getUUIDfromURL(req);
-    const user = await getUser(uuid);
+    const user = await getUser(uuid!);
     const data = JSON.parse(await getBodyData(req));
-    if (!(await userBodyErrorHandler(data, res))) return;
 
+    if (!(await userBodyErrorHandler(data, res))) return;
+        
     for (const key in users) {
       if (Object.hasOwnProperty.call(users, key)) {
         if (users[key].id === uuid) {
-          user[key].username = data.username;
-          user[key].age = data.age;
-          user[key].hobbies = JSON.parse(data.hobbies.replace(/'/g, '"'));
+          user.username = data.username;
+          user.age = data.age;
+          user.hobbies = JSON.parse(data.hobbies.replace(/'/g, '"'));
         }
       }
     }
+    
+    await success(await getUser(uuid!), 200, res);
 
-    await success(await getUser(uuid), 200, res);
   } catch (error) {
     await userServerErrorHandler(res);
   }
 };
 
-export const deleteOneUser = async (req, res) => {
+export const deleteOneUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     await userIdErrorHandler(req, res);
     const uuid = await getUUIDfromURL(req);
@@ -94,19 +113,25 @@ export const deleteOneUser = async (req, res) => {
   }
 };
 
-export const getUUIDfromURL = async (req) => req.url.split("/").at(-1);
+export const getUUIDfromURL = async (
+  req: IncomingMessage
+): Promise<string | undefined> => req.url!.split("/").at(-1);
 
-export const getUser = async (uuid) => {
+export const getUser = async (uuid: string) => {
   const user = users.filter((data) => uuid === data.id);
-  return user;
+  return user[0];
 };
 
-export const success = async (data, code, res) => {
+export const success = async (
+  data: string | IUser | IUser[],
+  code: number,
+  res: ServerResponse
+): Promise<void> => {
   res.statusCode = code;
   res.end(JSON.stringify(data));
 };
 
-export const getBodyData = async (req) => {
+export const getBodyData = async (req: IncomingMessage): Promise<string> => {
   const buffers = [];
   for await (const chunk of req) {
     buffers.push(chunk);
