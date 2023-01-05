@@ -6,7 +6,9 @@ import {
   deleteOneUser,
 } from "../controllers/user.js";
 
-export const requestListener = async (req, res) => {
+import {CustomResponse} from "../interfaces/response.interface"
+
+export const requestListener = async (req: Request, res: Response) => {
   res.setHeader("Content-Type", "application/json");
   if (req.url.endsWith("/api/users") && req.method === "GET") {
     await getAllUsers(req, res);

@@ -1,7 +1,7 @@
-export const userIdErrorHandler = async (req, res) => {
+export const userIdErrorHandler = async (req: Request, res:Response) => {
   const uuid = req.url.split("/").at(-1);
   if (
-    !uuid.match(
+    !uuid?.match(
       /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
     )
   ) {

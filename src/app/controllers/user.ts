@@ -1,4 +1,4 @@
-import { users } from "../server.js";
+import { users } from "../server";
 import { v4 as uuidv4 } from "uuid";
 import {
   userIdErrorHandler,
@@ -7,7 +7,7 @@ import {
   userBodyErrorHandler,
 } from "../users/userErrorHandler.js";
 
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req: Request, res: Response) => {
   try {
     await success(users, 200, res);
   } catch (error) {
@@ -15,7 +15,7 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-export const getOneUser = async (req, res) => {
+export const getOneUser = async (req: Request, res: Response) => {
   try {
     await userIdErrorHandler(req, res);
     const uuid = await getUUIDfromURL(req);
@@ -31,7 +31,7 @@ export const getOneUser = async (req, res) => {
   }
 };
 
-export const createOneUser = async (req, res) => {
+export const createOneUser = async (req: Request, res: Response) => {
   try {
     const user = JSON.parse(await getBodyData(req));
 
@@ -50,7 +50,7 @@ export const createOneUser = async (req, res) => {
   }
 };
 
-export const updateOneUser = async (req, res) => {
+export const updateOneUser = async (req: Request, res: Response) => {
   try {
     await userIdErrorHandler(req, res);
     const uuid = await getUUIDfromURL(req);
@@ -74,7 +74,7 @@ export const updateOneUser = async (req, res) => {
   }
 };
 
-export const deleteOneUser = async (req, res) => {
+export const deleteOneUser = async (req: Request, res: Response) => {
   try {
     await userIdErrorHandler(req, res);
     const uuid = await getUUIDfromURL(req);
@@ -93,14 +93,14 @@ export const deleteOneUser = async (req, res) => {
   }
 };
 
-export const getUUIDfromURL = async (req) => req.url.split("/").at(-1);
+export const getUUIDfromURL = async (req: Request) => req.url.split("/").at(-1);
 
-export const getUser = async (uuid) => {
+export const getUser = async (uuid: string) => {
   const user = users.filter((data) => uuid === data.id);
   return user;
 };
 
-export const success = async (data, code, res) => {
+export const success = async (data, code: Number, res:Response) => {
   res.statusCode = code;
   res.end(JSON.stringify(data));
 };
