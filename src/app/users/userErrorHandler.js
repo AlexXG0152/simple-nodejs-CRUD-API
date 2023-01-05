@@ -23,7 +23,7 @@ export const userBodyErrorHandler = async (user, res) => {
   return true
 };
 
-export const userExistsErrorHandler = async (res) => {
+export const userNotExistsErrorHandler = async (res) => {
   res.statusCode = 404;
   res.end(JSON.stringify({ error: "userId doesn't exist" }));
 };
