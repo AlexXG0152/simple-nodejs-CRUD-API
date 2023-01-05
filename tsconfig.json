@@ -109,5 +109,7 @@
     "compilerOptions": {
       "module": "esnext"
     }
-  }
+  },
+  "include": ["./**/*.ts", "src/tests/user/user.specjs"],
+  "exclude": ["./dist"],
 }

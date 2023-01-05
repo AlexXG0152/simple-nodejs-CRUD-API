@@ -1,18 +1,18 @@
 import http from "node:http";
+import * as dotenv from "dotenv";
 import { routes } from "../app/routes/router";
 import { generateUsersArray } from "../app/users/userCreate";
-import * as dotenv from "dotenv";
+import { IUser } from "../app/interfaces/user.interface";
 
 dotenv.config();
 
 const hostname = process.env.HOSTHAME as unknown as string;
 const port = process.env.PORT as unknown as number;
 
-const server = http.createServer(routes);
-export const users = await generateUsersArray(0, 100);
+export const server = http.createServer(routes);
+export let users: IUser[];
 
-server.listen(port, hostname, () => {
+server.listen(port, hostname, async () => {
   console.log(`Server running at http://${hostname}:${port}/`);
+  users = await generateUsersArray(1, 100);
 });
-
-
