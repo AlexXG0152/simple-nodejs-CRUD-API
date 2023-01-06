@@ -30,8 +30,7 @@ export const getOneUser = async (
     const user = await getUser(uuid!);
 
     if (!user) {
-      await userNotExistsErrorHandler(res);
-      return;
+      return await userNotExistsErrorHandler(res);
     }
 
     await success(user, 200, res);
@@ -70,6 +69,11 @@ export const updateOneUser = async (
     await userIdErrorHandler(req, res);
     const uuid = await getUUIDfromURL(req);
     const user = await getUser(uuid!);
+
+    if (!user) {
+      return await userNotExistsErrorHandler(res);
+    }
+
     const data = JSON.parse(await getBodyData(req));
 
     if (!(await userBodyErrorHandler(data, res))) return;
@@ -97,16 +101,20 @@ export const deleteOneUser = async (
   try {
     await userIdErrorHandler(req, res);
     const uuid = await getUUIDfromURL(req);
+    let deleted = false;
 
     for (const key in users) {
       if (Object.hasOwnProperty.call(users, key)) {
         if (users[key].id === uuid) {
           users.splice(users.indexOf(users[key]), 1);
+          deleted = true;
+          console.log("Deleted successfully");
         }
       }
     }
+    if (!deleted) return await userNotExistsErrorHandler(res);
 
-    await success("", 204, res);
+    await success({}, 204, res);
   } catch (error) {
     await userServerErrorHandler(res);
   }
@@ -122,7 +130,7 @@ export const getUser = async (uuid: string) => {
 };
 
 export const success = async (
-  data: string | IUser | IUser[],
+  data: object | IUser | IUser[],
   code: number,
   res: ServerResponse
 ): Promise<void> => {

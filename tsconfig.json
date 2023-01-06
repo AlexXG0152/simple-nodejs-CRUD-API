@@ -110,6 +110,6 @@
       "module": "esnext"
     }
   },
-  "include": ["./**/*.ts", "src/tests/user/user.specjs"],
+  "include": ["./**/*.ts", "src/tests/api/users/user.specjs"],
   "exclude": ["./dist"],
 }
