@@ -7,7 +7,7 @@
   "scripts": {
     "start:dev": "nodemon src/app/server.ts",
     "start:prod": "webpack",
-    "start:multi": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! npm run start:multi",
+    "start:multi": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! nodemon src/app/multi.ts",
     "start:build": "tsc -p .",
     "start:mocha": "mocha --timeout 60000 --exit"
   },
