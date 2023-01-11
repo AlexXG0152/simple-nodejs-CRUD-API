@@ -45,6 +45,3 @@ export const userServerErrorHandler = async (
   res.statusCode = 500;
   res.end(JSON.stringify({ error: "server error" }));
 };
-
-// Server should answer with status code 400 and corresponding message if userId is invalid (not uuid)
-// Server should answer with status code 404 and corresponding message if record with id === userId doesn't exist

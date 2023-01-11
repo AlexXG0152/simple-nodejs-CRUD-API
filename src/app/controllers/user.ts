@@ -108,7 +108,6 @@ export const deleteOneUser = async (
         if (users[key].id === uuid) {
           users.splice(users.indexOf(users[key]), 1);
           deleted = true;
-          console.log("Deleted successfully");
         }
       }
     }
