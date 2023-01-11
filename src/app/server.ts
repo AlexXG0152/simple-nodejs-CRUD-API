@@ -8,7 +8,6 @@ import { generateUsersArray } from "./users/userCreate";
 
 dotenv.config();
 
-const multiServer = true;
 const hostname = process.env.HOSTHAME as unknown as string;
 const port = process.env.PORT as unknown as number;
 const multiport = process.env.MULTIPORT as unknown as number;
@@ -20,10 +19,10 @@ export let server: http.Server<
   typeof http.ServerResponse
 >;
 
-if (!multiServer) {
+if (process.env.TYPE === "single") {
   await single(server!, port, hostname);
 }
 
-if (multiServer) {
+if (process.env.TYPE === "multi") {
   await multi(server!, multiport, hostname);
 }

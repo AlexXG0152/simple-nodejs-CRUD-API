@@ -5,11 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start:dev": "nodemon src/app/server.ts",
+    "start:dev": "cross-env TYPE=single nodemon src/app/server.ts",
     "start:prod": "webpack",
-    "start:multi": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! nodemon src/app/multi.ts",
-    "start:build": "tsc -p .",
-    "start:mocha": "mocha --timeout 60000 --exit"
+    "start:multi": "cross-env TYPE=multi nodemon src/app/server.ts",
+    "start:tests": "mocha --timeout 60000 --exit"
   },
   "repository": {
     "type": "git",
@@ -25,6 +24,7 @@
   },
   "homepage": "https://github.com/AlexXG0152/simple-nodejs-CRUD-API#readme",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "nodemon": "^2.0.20",
     "uuid": "^9.0.0",

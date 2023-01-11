@@ -45,16 +45,16 @@ export const createOneUser = async (
 ): Promise<void> => {
   try {
     const user = JSON.parse(await getBodyData(req));
-
+        
     if (!(await userBodyErrorHandler(user, res))) return;
-
+    
     users.push({
       id: uuidv4(),
       username: user.username,
       age: user.age,
       hobbies: JSON.parse(user.hobbies.replace(/'/g, '"')),
     });
-
+        
     await success(users.at(-1)!, 201, res);
   } catch (error) {
     await userServerErrorHandler(res);
