@@ -19,7 +19,9 @@
 ## Prerequisites
 
 Use:
+
 Node.js 18.12.1 LTS
+
 Typescript ^4.9.4
 
 
@@ -59,6 +61,8 @@ start:multi
 ```sh
 start:tests
 ```
+
+Also for testing you can import Postman json file with requests and check API.
 
 ## API Map
 
