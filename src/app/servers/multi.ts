@@ -8,14 +8,15 @@ import { Worker } from "cluster";
 import { getBodyData } from "../controllers/user";
 import { IOptions } from "../interfaces/multiServerRequestOptions.interface";
 
-const ports: any[] = await createPortList();
 let instance = 0;
+let ports: string | any[];
 
 export const multi = async (
   server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>,
   multiport: number,
   hostname: string
 ) => {
+  ports = await createPortList();
   const numCPUs = cpus().length;
 
   if (cluster.isPrimary) {
@@ -30,11 +31,7 @@ export const multi = async (
         .createServer(async (req: IncomingMessage, res: ServerResponse) => {
           await routes(req, res);
         })
-        .listen(Number(multiport) + i, hostname, async () => {
-          console.log(
-            `Server running at http://${hostname}:${Number(multiport) + i}/`
-          );
-        });
+        .listen(Number(multiport) + i, hostname);
     }
 
     cluster.on("online", function (worker) {

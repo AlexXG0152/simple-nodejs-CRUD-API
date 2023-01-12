@@ -1,30 +1,26 @@
 import * as path from "path";
-import * as webpack from "webpack";
-import "webpack-dev-server";
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 
 const config = {
   mode: "production",
   entry: "./src/app/server.ts",
   output: {
     path: path.resolve("./dist"),
-    filename: "api.bundle.js",
+    filename: "api.bundle.cjs",
+    clean: true,
   },
   resolve: {
-    // Add `.ts` and `.tsx` as a resolvable extension.
     extensions: [".ts", ".tsx", ".js"],
+    plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })],
   },
   module: {
-    rules: [
-      // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
-      { test: /\.ts?$/, loader: "ts-loader"},
-    ],
+    rules: [{ test: /\.ts?$/, loader: "ts-loader" }],
   },
   experiments: {
     topLevelAwait: true,
   },
   target: "node",
   externals: {
-    // You can use `false` or other values if you need something strange here,example will output `module.exports = {};`
     "node:path": "{}",
   },
 };
