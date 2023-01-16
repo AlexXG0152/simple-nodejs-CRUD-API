@@ -36,6 +36,7 @@ npm install
 
 There are 3 modes of running application (development and production):
 1. Development.
+
 The application is run in development mode using nodemon.
 
 ```sh
@@ -43,13 +44,15 @@ start:dev
 ```
 
 2. Production.
+
 The application is run in production mode.
 
 ```sh
 start:prod
 ```
 
-3. Scaling
+3. Scaling.
+
 Horizontal scaling for application. Script starts multiple instances of application using the Node.js Cluster API (equal to the number of logical processor cores on the host machine, each listening on port PORT + n) with a load balancer that distributes requests across them (using Round-robin algorithm). For example: host machine has 4 cores, PORT is 4000. On localhost:4000/api load balancer is listening for requests. On localhost:4001/api, localhost:4002/api, localhost:4003/api, localhost:4004/api workers are listening for requests from load balancer. When user sends request to localhost:4000/api, load balancer sends this request to localhost:4001/api, next user request is sent to localhost:4002/api and so on. After sending request to localhost:4004/api load balancer starts from the first worker again (sends request to localhost:4001/api).
 
 You will see in console hostname:4001, hostname:4002, hostname:4003 etc.

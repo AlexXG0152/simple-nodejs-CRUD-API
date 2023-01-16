@@ -8,7 +8,7 @@
     "start:dev": "cross-env TYPE=single nodemon src/app/server.ts",
     "start:prod": "webpack && cross-env TYPE=single node ./dist/api.bundle.cjs",
     "start:multi": "cross-env TYPE=multi nodemon src/app/server.ts",
-    "start:tests": "mocha --timeout 60000 --exit"
+    "start:tests": "cross-env TYPE=single mocha --timeout 60000 --exit"
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,7 @@
 import { IncomingMessage, ServerResponse } from "node:http";
-import {
-  getAllUsers,
-  getOneUser,
-  createOneUser,
-  updateOneUser,
-  deleteOneUser,
-} from "../controllers/user";
+import { UserController } from "../controllers/user";
+
+const User = new UserController();
 
 export const routes = async (
   req: IncomingMessage,
@@ -14,15 +10,15 @@ export const routes = async (
   try {
     res.setHeader("Content-Type", "application/json");
     if (req.url!.endsWith("/api/users") && req.method === "GET") {
-      await getAllUsers(req, res);
+      await User.getAll(req, res);
     } else if (req.url!.includes("/api/users/") && req.method === "GET") {
-      await getOneUser(req, res);
+      await User.getOne(req, res);
     } else if (req.url === "/api/users" && req.method === "POST") {
-      await createOneUser(req, res);
+      await User.createOne(req, res);
     } else if (req.url!.includes("/api/users/") && req.method === "PUT") {
-      await updateOneUser(req, res);
+      await User.updateOne(req, res);
     } else if (req.url!.includes("/api/users/") && req.method === "DELETE") {
-      await deleteOneUser(req, res);
+      await User.deleteOne(req, res);
     } else {
       res.statusCode = 404;
       res.end(JSON.stringify({ error: "Resource not found" }));

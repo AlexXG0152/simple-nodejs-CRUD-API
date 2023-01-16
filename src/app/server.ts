@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 import { IUser } from "../app/interfaces/user.interface";
 import { single } from "./servers/single";
 import { multi } from "./servers/multi";
-import { generateUsersArray } from "./users/userCreate";
+import { generateUsersArray } from "./users/userCreateHelpers";
 
 dotenv.config();
 
